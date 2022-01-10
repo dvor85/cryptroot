@@ -30,7 +30,7 @@ mkdir -p "${DESTDIR}/etc"
 echo 'passwd: compat' > "${DESTDIR}/etc/nsswitch.conf"
 echo "root:x:0:0:root:/root:/bin/sh" > "${DESTDIR}/etc/passwd"
 
-id_rsa="/etc/initramfs-tools/root/.ssh/id_rsa"
+id_rsa="/etc/initramfs-tools/etc/.ssh/id_rsa"
 if [ ! -f $id_rsa ]; then
     mkdir -p "$(dirname $id_rsa)"
     ssh-keygen -q -t rsa -N "" -C unlock_$(hostname) -f $id_rsa
@@ -43,7 +43,7 @@ if [ ! -f $id_rsa ]; then
     cat $KEYFILE | ssh -o ConnectTimeout=10 -i $id_rsa $USERSERV "cat - > ~/$MYKEY; chmod 400 ~/$MYKEY"
     [ ! $? -eq 0 ] && echo "FAILED!"
 fi
-mkdir -p "${DESTDIR}/root/.ssh/"
-cp -r /etc/initramfs-tools/root "${DESTDIR}"
+mkdir -p "${DESTDIR}/etc/.ssh/"
+cp -r /etc/initramfs-tools/etc "${DESTDIR}"
 
 

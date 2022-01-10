@@ -2,6 +2,7 @@
 
 PREREQ="udev"
 EXCEPT_DEVLIST=$(/sbin/blkid -o device -t TYPE=crypto_LUKS | tr '\n' ' ')
+id_rsa=/etc/.ssh/id_rsa
 
 prereqs()
 {
@@ -132,12 +133,19 @@ get_key_from_net()
     update_resolv_conf
     wait_for_udev 10
     if [ ! -s "$KEYFILE" ]; then
-        /sbin/ssh -q -o StrictHostKeyChecking=no -o ConnectTimeout=10 $USERSERV "cat ~/$MYKEY" > "$KEYFILE"
+        /sbin/ssh -q -o StrictHostKeyChecking=no -o ConnectTimeout=10 -i $id_rsa $USERSERV "cat ~/$MYKEY" > "$KEYFILE"
     fi
     if [ -s "$KEYFILE" ]; then
 	return 0
     fi;
     return 1;
+}
+
+make_dir_for_key()
+{
+    mkdir -p $(dirname "$KEYFILE")
+    #mount -t tmpfs -o size=1M tmpfs $rootmnt
+    #mkdir $rootmnt/root
 }
 
 get_key()
@@ -149,6 +157,7 @@ get_key()
 
 main()
 {
+    make_dir_for_key
     while ! get_key; do
 	sleep 10;
     done;

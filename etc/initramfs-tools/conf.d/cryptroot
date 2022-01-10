@@ -1,1 +1,0 @@
-source=UUID=9b9b0c1d-751c-478c-8492-2a51452ad154,target=diskroot,lvm=vgroot-rootfs,keyscript=/sbin/loadkey
