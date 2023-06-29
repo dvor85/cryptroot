@@ -35,7 +35,7 @@ get_key_from_fs()
             if [ -s "$mpoint/$MYKEY" ]; then
                 cat "$mpoint/$MYKEY" > "$KEYFILE"
             fi
-            umount $dev >/dev/null 2>&1
+            umount $mpoint >/dev/null 2>&1
 	else
 	    EXCEPT_DEVLIST="$EXCEPT_DEVLIST $dev"
         fi;

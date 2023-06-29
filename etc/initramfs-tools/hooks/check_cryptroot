@@ -1,24 +1,26 @@
 #!/bin/sh
-PREREQ="cryptroot"
-prereqs()
-{
+  PREREQ="cryptroot"
+  prereqs()
+  {
     echo "$PREREQ"
-}
+  }
 
-case $1 in
-    prereqs)
-        prereqs
-        exit 0
-    ;;
-esac
+  case $1 in
+  prereqs)
+    prereqs
+    exit 0
+  ;;
+  esac
 
-. /usr/share/initramfs-tools/hook-functions
-. /lib/cryptsetup/functions
-# Begin real processing below this line
+  . /usr/share/initramfs-tools/hook-functions
+  . /lib/cryptsetup/functions
+  # Begin real processing below this line
 
-if [ ! -s "${DESTDIR}/cryptroot/crypttab" ]; then
+  if [ ! -s "${DESTDIR}/cryptroot/crypttab" ]; then
     cryptsetup_message "ERROR: \"/cryptroot/crypttab\" is empty." \
-                       "System will not boot! Option \"keyscript=/bin/cat\" is used for disk with rootfs in \"/etc/crypttab\"?"
-fi
-
-
+                       "System will not boot!" \
+                       "Option \"keyscript=/bin/cat\" is used for disk with rootfs in \"/etc/crypttab\"?" \
+                       "Last line exists in \"/etc/crypttab\"?"
+  fi
+  
+    
